@@ -15,7 +15,14 @@ const getUserRepos = (user) => {
 
 const formSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(event);    
+    let username = nameInputEl.value.trim();
+    
+    if (username) {
+        getUserRepos(username);
+        nameInputEl.value = '';
+    } else {
+        alert('Please enter a GitHub username');
+    }
 }
 
 getUserRepos();
