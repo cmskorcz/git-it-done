@@ -1,4 +1,5 @@
 let issueContainerEl = document.getElementById('issues-container');
+let limitWarningEl = document.getElementById('limit-warning');
 
 const getRepoIssues = (repo) => {
     let apiUrl = `https://api.github.com/repos/${repo}/issues?direction=asc`;
@@ -8,6 +9,10 @@ const getRepoIssues = (repo) => {
                 res.json()
         .then((data) => {
             displayIssues(data)
+
+            if (res.headers.get('Link')) {
+                displayWarning(repo);
+            }
             });
         } else {
             alert("There was a problem with your request!");
@@ -48,5 +53,17 @@ const displayIssues = (issues) => {
     }
 
 };
+
+const displayWarning = (repo) => {
+    limitWarningEl.textContent = 'To see more than 30 issues, visit '
+
+    let linkEl = document.createElement('a');
+
+    linkEl.textContent = 'See more Issues on GitHub.com';
+    linkEl.setAttribute('href', `https://github.com/${repo}/issues`);
+    linkEl.setAttribute('target', '_blank');
+
+    limitWarningEl.appendChild(linkEl);
+}
 
 getRepoIssues('facebook/react');
