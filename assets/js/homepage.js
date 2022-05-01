@@ -2,6 +2,8 @@ let userFormEl = document.getElementById('user-form');
 let nameInputEl = document.getElementById('username');
 let repoContainerEl = document.getElementById('repos-container');
 let repoSearchTerm = document.getElementById('repo-search-term');
+let languageButtonsEl = document.getElementById('language-buttons');
+
 
 const getUserRepos = (user) => {
     let userApi = `https://api.github.com/users/${user}/repos`;
@@ -85,5 +87,15 @@ const getFeaturedRepos = (language) => {
         });
 };
 
+const buttonClickHandler = (event) => {
+    let language = event.target.getAttribute('data-language');
+    
+    if (language) {
+        getFeaturedRepos(language);   
+        repoContainerEl.textContent = '';
+    }
+};
+
 getUserRepos();
 userFormEl.addEventListener('submit', formSubmitHandler);
+languageButtonsEl.addEventListener('click', buttonClickHandler);
