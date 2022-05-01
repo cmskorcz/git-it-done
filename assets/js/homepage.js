@@ -8,10 +8,17 @@ const getUserRepos = (user) => {
 
     fetch(userApi)
         .then((res) => {
-            res.json()
+            if (res.ok) {
+                res.json()
                 .then((data) => {
                     displayRepos(data, user);
                 })
+            } else {
+                alert('Error: GitHub User Not Found');
+            }
+        })
+        .catch((err) => {
+            alert('Unable to connect to GitHub');
         });
 };
 
@@ -30,6 +37,11 @@ const formSubmitHandler = (event) => {
 const displayRepos = (repos, searchTerm) => {
     repoContainerEl.textContent = '';
     repoSearchTerm.textContent = searchTerm;
+
+    if (repos.length === 0) {
+        repoContainerEl.textContent = 'No repositories found.';
+        return;
+    }
 
     for (let i = 0; i < repos.length; i++) {
         let repoName = `${repos[i].owner.login}/${repos[i].name}`;
